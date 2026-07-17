@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  templates/index.html — 빌드 시스템용 원본 HTML 뼈대 파일
+  ============================================================
+  ★ 이 파일을 직접 열어도 작동하지 않습니다.
+    반드시 build.js를 실행하여 dist/ 폴더의 결과물을 사용하세요.
+    (node build.js 명령어 실행)
+  ★ {{PLACEHOLDER}} 형태의 텍스트는 build.js가 자동으로 교체합니다.
+  ============================================================
+-->
+<html lang="tl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- ── 기본 SEO 태그 ──────────────────────────────────── -->
+  <title>Sino ang Anghel Bantay mo? + K-Food ngayon! Viral sa Korea at Pilipinas! 🪽✨</title>
+  <meta name="description" content="Alamin kung sino ang nagbabantay sa iyo at anong K-Food ang swerte mo ngayon! Libre lang, walang sign-up! 🌸" />
+  <meta name="theme-color" content="#93c5fd" />
+
+  <!-- ── Open Graph (WhatsApp / Facebook 링크 미리보기) ───
+       WhatsApp에서 링크를 공유하면 이 태그들이 미리보기 카드로 표시됩니다.
+       OG 이미지는 1200×630px 권장 (dist/ 폴더 옆에 이미지 파일을 두세요)
+  ──────────────────────────────────────────────────────── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Sino ang Anghel Bantay mo? + K-Food ngayon! Viral sa Korea at Pilipinas! 🪽✨" />
+  <meta property="og:description" content="Alamin kung sino ang nagbabantay sa iyo at anong K-Food ang swerte mo ngayon! Libre lang, walang sign-up! 🌸" />
+  <meta property="og:image"       content="https://dmazone.github.io/palad/og.jpg" />
+  <meta property="og:url"         content="https://dmazone.github.io/palad" />
+  <meta property="og:site_name"   content="Global Lucky Vending Machine" />
+  <meta property="og:locale"      content="tl" />
+
+  <!-- ── Twitter/X 카드 태그 ──────────────────────────── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Sino ang Anghel Bantay mo? + K-Food ngayon! Viral sa Korea at Pilipinas! 🪽✨" />
+  <meta name="twitter:description" content="Alamin kung sino ang nagbabantay sa iyo at anong K-Food ang swerte mo ngayon! Libre lang, walang sign-up! 🌸" />
+  <meta name="twitter:image"       content="https://dmazone.github.io/palad/og.jpg" />
+
+  <!-- ── Monetag 도메인 인증 태그 ───────────────────── -->
+  <meta name="monetag" content="d89cac26ae746af77369036c435c525a">
+
+  <!-- ── Tailwind CSS CDN ────────────────────────────────
+       백엔드리스 단일 HTML 구조이므로 CDN 방식을 사용합니다.
+       추후 성능 최적화 시 빌드 프로세스에 Tailwind CLI를 추가하세요.
+  ──────────────────────────────────────────────────────── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ── 글로벌 광고 스크립트 플레이스홀더 ──────────────
+       ★ Adsterra 광고 코드 삽입 방법:
+          1. adsterra.com 대시보드 로그인
+          2. "Create New Zone" → Pop-under 또는 Native Banner 선택
+          3. 발급된 <script> 코드를 아래 주석 사이에 붙여넣기
+          4. build.js를 다시 실행 (node build.js)
+       ★ 광고 코드 없이도 앱은 정상 작동합니다 (3초 폴백 타이머가 대신합니다).
+  ──────────────────────────────────────────────────────── -->
+  <script src="https://pl30266860.effectivecpmnetwork.com/18/6a/c8/186ac8497a54269d48446588828ff834.js"></script>
+<script src="https://pl30266863.effectivecpmnetwork.com/b0/f9/5c/b0f95c6659075e426bc04c507ff6ae00.js"></script>
+<script src="https://quge5.com/88/tag.min.js" data-zone="259796" async data-cfasync="false"></script>
+
+  <!-- ── Social Bar 클릭 가로채기 방지 ─────────────────
+       Adsterra Social Bar의 invoke_layer(투명 전체화면 <a>)가
+       CTA 버튼 클릭을 가로채는 문제를 수정합니다.
+       광고 수익에는 영향 없음 — 팝언더/배너/소셜바 알림은 정상 유지.
+  ──────────────────────────────────────────────────────── -->
+  <script>
+    (function () {
+      function patchSocialBarOverlay() {
+        document.querySelectorAll('a').forEach(function (a) {
+          var cs = getComputedStyle(a);
+          if (cs.position === 'fixed' &&
+              parseFloat(cs.width)  > window.innerWidth  * 0.5 &&
+              parseFloat(cs.height) > window.innerHeight * 0.3) {
+            a.style.setProperty('pointer-events', 'none', 'important');
+          }
+        });
+      }
+      setTimeout(patchSocialBarOverlay, 600);
+      setInterval(patchSocialBarOverlay, 2000);
+    })();
+  </script>
+
+  <!-- ── 국가별 Config 스크립트 (build.js가 자동 주입) ──
+       빌드 시 config-in.js 또는 config-id.js가 여기에 인라인 삽입됩니다.
+       이 스크립트가 window.APP_CONFIG를 정의합니다.
+  ──────────────────────────────────────────────────────── -->
+  <script>
+/* ====================================================
+ * PHILIPPINES 스킨 설정 (자동 생성 - 수정하지 마세요)
+ * 원본: src/config-ph.js
+ * ==================================================== */
+// ============================================================
+// config-ph.js — 필리핀(Philippines) 스킨 설정 파일
+// ============================================================
+// 벤치마크: cekkhodam.com (인도네시아)
+// 컨셉: Anghel Bantay (수호천사) 매칭 + K-Food 룰렛
+// 타겟: 필리핀 Z세대, 가톨릭+전통 신앙 믹스, 강한 K-팝 팬덤
+// 언어: Filipino (Tagalog) + 영어 혼용 (Taglish)
+// ★ 필리핀 = Facebook 압도적 1위, TikTok 급성장, K-Culture 최상위 소비국
+// ============================================================
+
+window.APP_CONFIG = {
+  country: 'philippines',
+  lang: 'tl',
+
+  og: {
+    title: "Sino ang Anghel Bantay mo? + K-Food ngayon! Viral sa Korea at Pilipinas! 🪽✨",
+    description: "Alamin kung sino ang nagbabantay sa iyo at anong K-Food ang swerte mo ngayon! Libre lang, walang sign-up! 🌸",
+    image: "https://dmazone.github.io/palad/og.jpg",
+    url: "https://dmazone.github.io/palad"
+  },
+
+  ui: {
+    appTitle: "🪽 Anghel Bantay + K-Food",
+    appSubtitle: "Sino ang nagbabantay sa iyo? Anong K-Food ang swerte mo? 🌸💕",
+    heroEmoji: "🪽💫✨",
+    ctaButton: "✨ Alamin ang Anghel ko ngayon! 🪽",
+    ctaSubtext: "Viral sa Korea at Pilipinas! 🔥 Libre, walang sign-up!",
+    resultTitle: "💕 Ang Iyong Anghel Bantay! 💕",
+    shareButton: "💬 I-share sa Facebook at I-tag ang 3 kaibigan!",
+    shareSubtext: "I-tag ang tatlong kaibigan para malaman din nila ang kanilang Anghel Bantay! 🔥💕",
+    shareSectionTitle: "📲 I-share sa mga Kaibigan mo!",
+    retryButton: "🔄 Subukan muli",
+    adNotice: "Tinatawag ang iyong Anghel Bantay... ✨",
+    smartlinkButton: "✨ Matuklasan ang mas maraming swerte! →",
+    koreaBadge: "🇰🇷 Trending sa Korea · Viral sa Pilipinas 🇵🇭",
+
+    selectorLabel: null,
+    selectorOptions: [],
+
+    zodiacLabel: "Piliin ang iyong Zodiac 🌙",
+    zodiacPlaceholder: "Zodiac para sa mas personalized na resulta~",
+    zodiacOptions: [
+      { value: 0,  label: "♈ Aries — Ang Matapang" },
+      { value: 1,  label: "♉ Taurus — Ang Tapat" },
+      { value: 2,  label: "♊ Gemini — Ang Versatile" },
+      { value: 3,  label: "♋ Cancer — Ang Sensitibo" },
+      { value: 4,  label: "♌ Leo — Ang Kumpiyansa" },
+      { value: 5,  label: "♍ Virgo — Ang Perpeksyonista" },
+      { value: 6,  label: "♎ Libra — Ang Makatarungan" },
+      { value: 7,  label: "♏ Scorpio — Ang Misteriyoso" },
+      { value: 8,  label: "♐ Sagittarius — Ang Adventurer" },
+      { value: 9,  label: "♑ Capricorn — Ang Ambisyoso" },
+      { value: 10, label: "♒ Aquarius — Ang Natatangi" },
+      { value: 11, label: "♓ Pisces — Ang Malikhain" }
+    ],
+
+    weeklyTrendLabel: "🔥 K-Trend ngayong linggo sa Pilipinas",
+
+    visitorText: "katao na natuklasan ang kanilang Anghel Bantay ngayon!",
+    visitorBase: 13000,
+    visitorVariance: 8000,
+
+    dailyItemTitle: "🌸 Lucky Item mo Ngayon"
+  },
+
+  dailyLuckyItems: [
+    { emoji: "🕯️", name: "Puting Kandila", desc: "Mag-ilaw ng puting kandila habang nagdarasal — pinoprotektahan ka ng iyong Anghel mula sa lahat ng negatibong enerhiya! 🕯️✨" },
+    { emoji: "🌺", name: "Sampaguita", desc: "Magsuot o maglagay ng sampaguita sa tabi mo ngayon — ang pabango nito ay nagdadala ng kapalaran at pagpapalà! 🌺" },
+    { emoji: "📿", name: "Rosaryo", desc: "Dalhin ang iyong rosaryo ngayon — ang proteksyon ng iyong Anghel Bantay ay magiging mas malakas at makapangyarihan! 📿✨" },
+    { emoji: "💛", name: "Dilaw na Damit", desc: "Magsuot ng kahit isang dilaw na bagay ngayon — swerte at tagumpay ang darating sa iyong araw! 💛🌟" },
+    { emoji: "🍊", name: "Dalawang Kahel", desc: "Maglagay ng dalawang kahel sa mesa mo ngayon — simbolo ito ng kasaganaan at magandang balita! 🍊🍊" },
+    { emoji: "🪙", name: "Lumang Barya", desc: "Ilagay ang isang lumang barya sa iyong wallet ngayon — ang Anghel mo ay nagdadagdag ng biyaya sa iyong pinansyal! 🪙✨" },
+    { emoji: "🌿", name: "Sanga ng Alagaw", desc: "Hawakan o aminin ang sanga ng alagaw ngayon — nagpoprotekta ito mula sa masamang mata at masamang enerhiya! 🌿" },
+    { emoji: "🔴", name: "Pulang Sinulid", desc: "Itali ang isang pulang sinulid sa iyong pulso — ito ay nagpoprotekta sa iyo at nagdadala ng lakas buong araw! 🔴💪" },
+    { emoji: "🪞", name: "Malinis na Salamin", desc: "Magpakita sa salamin at sabihing 'Salamat' — ang positibong saloobin ay magpapalakas ng iyong aura ngayon! 🪞✨" },
+    { emoji: "🫧", name: "Asin sa Pintuan", desc: "Maglagay ng konting asin sa pintuan ng iyong kwarto ngayon — nagpapahina ito ng lahat ng negatibong pumasok! 🫧" },
+    { emoji: "🌸", name: "Pink na Bulaklak", desc: "Tumingnan ng pink na bulaklak o kulay ngayon — ang enerhiya ng pag-ibig at kabaitan ay bumabalik sa iyo! 🌸💕" },
+    { emoji: "☀️", name: "Liwanag ng Umaga", desc: "Lumabas at harapin ang sikat ng araw sa umaga — ito ay nagbibigay ng lakas at biyaya para sa buong araw! ☀️✨" }
+  ],
+
+  weeklyKTrends: [
+    { emoji: "🍜", trend: "Buldak Ramen Challenge", desc: "Sikat sa buong Pilipinas! Sino ang makakayang kumain nang walang tubig? 🔥🇵🇭🇰🇷" },
+    { emoji: "💄", trend: "Glass Skin Tutorial", desc: "Ang mga Filipina influencer ay nag-a-upload ng K-Beauty glass skin routine — trending sa TikTok! ✨" },
+    { emoji: "🎵", trend: "BLACKPINK Manila Concert", desc: "Ang BLINK sa Pilipinas ay nag-a-abang pa rin sa comeback! 🖤💗" },
+    { emoji: "🧋", trend: "Ube Milk Tea", desc: "Ang K-inspired ube milk tea ay nag-aabangan sa lahat ng milk tea shops sa Pilipinas! 💜" },
+    { emoji: "🍱", trend: "Korean BBQ Buffet", desc: "Ang unlimited Korean BBQ buffet ay trending sa Metro Manila — lagi nang puno! 🥩🔥" },
+    { emoji: "👗", trend: "K-Drama Fashion", desc: "Ang OOTD inspirado sa K-Drama ay viral sa Facebook at Instagram Philippines! 👗✨" },
+    { emoji: "🎭", trend: "Crash Landing on You Rewatch", desc: "Minsan pa nire-rewatch ng mga Pinoy ang CLOY — iconic na talaga! 💕✈️" },
+    { emoji: "🍨", trend: "Korean Bingsu sa Pilipinas", desc: "Nagsisimula na ang mga cafe sa Pilipinas na mag-serve ng authentic Korean bingsu! ❄️🥭" },
+    { emoji: "📱", trend: "WEVERSE Pinoy Fan Community", desc: "Ang Pinoy ARMY at Carats ay isa sa pinaka-active na fan groups sa buong mundo! 💜💎" },
+    { emoji: "🌶️", trend: "Tteokbokki Food Cart", desc: "Ang tteokbokki food cart ay lumabas na sa mga palengke at food parks sa Pinas! 🌶️🍡" },
+    { emoji: "🎤", trend: "P-Pop at K-Pop Collab", desc: "Ang SB19 at iba pang P-Pop groups ay nagko-collab na inspired ng K-Pop — proud Pinoy! 🇵🇭🇰🇷" },
+    { emoji: "🌸", trend: "Jeju Skin K-Beauty Haul", desc: "Ang unboxing ng Korean skincare haul ay pinaka-viewed na content sa Pilipinas ngayong linggo! 🌸✨" }
+  ],
+
+  resultPools: {
+
+    // Anghel Bantay (수호천사) 풀 — 필리핀 가톨릭+전통 신앙 믹스
+    khodam: [
+      {
+        emoji: "⚔️🪽",
+        name: "Arkanghel San Miguel",
+        rarity: "💎 NAPAKA-BIHIRANG",
+        personalityTag: "🛡️ Mandirigma ng Liwanag",
+        desc: "Ang pinaka-makapangyarihang Arkanghel ang nagbabantay sa iyo! Si San Miguel ay ang pinuno ng hukbo ng langit — may lakas kang hindi kayang wasakin ng kahit anong hamon. Kapag may nagtatangkang saktan ka, siya ang una mong kalasag. Gamitin ang lakas na ito ngayon! ⚔️✨"
+      },
+      {
+        emoji: "🌸🪽",
+        name: "Diwata ng Kagubatan",
+        rarity: "🌟 BIHIRANG",
+        personalityTag: "🌿 Tagapag-alaga ng Kalikasan",
+        desc: "Ang Diwata ng Kagubatan ang nagbabantay sa iyo! Mayroon kang koneksyon sa kalikasan na hindi lahat ay nararamdaman. Ang iyong intuisyon ay napaka-tumpak — magtiwala sa iyong kutob! Ang mga halaman at hayop ay parang kaibigan mo na hindi kailangang magsalita. 🌿💚"
+      },
+      {
+        emoji: "💕🪽",
+        name: "Anghel ng Pag-ibig",
+        rarity: "✨ ESPESYAL",
+        personalityTag: "💖 Tagapagbuklod ng Puso",
+        desc: "Ang Anghel ng Pag-ibig ang nag-aalaga sa iyong puso! Mahal kang mahal ng mga taong nakapaligid sa iyo kahit hindi nila palaging naipapadama. Ang iyong kakayahang magmahal nang walang kondisyon ay isang regalo — huwag hayaang samantalahin ito ng maling tao! 💕✨"
+      },
+      {
+        emoji: "👑✨",
+        name: "Bathala",
+        rarity: "💎 NAPAKA-BIHIRANG",
+        personalityTag: "🌟 Anak ng Pinakamataas",
+        desc: "Ang Bathala mismo — ang pinaka-dakila sa lahat ng espiritu — ang kumikikilala sa iyo! Ikaw ay may destinasyong mas malaki kaysa sa iyong naiisip. Ang mga pagsubok sa iyong buhay ay hindi parusa — kundi paghubog para sa mas malaking misyon na inihanda para sa iyo! 👑⭐"
+      },
+      {
+        emoji: "🏆🪽",
+        name: "Anghel ng Tagumpay",
+        rarity: "⭐ KARANIWAN",
+        personalityTag: "🎯 Palaging Panalo",
+        desc: "Ang Anghel ng Tagumpay ang kasama mo sa bawat hakbang! Hindi ka basta-basta sumusuko — kahit gaano kahirap, tinutupad mo ang iyong mga pangarap. Ang swerte ay hindi lang swerte para sa iyo — ito ay resulta ng iyong pagsisikap na pinagpapala ng iyong Anghel! 🏆💪"
+      },
+      {
+        emoji: "🌊🪽",
+        name: "Diwata ng Dagat",
+        rarity: "🌟 BIHIRANG",
+        personalityTag: "🌊 Malaya at Malalim",
+        desc: "Ang Diwata ng Dagat — si Magwayen ng sinaunang Bisaya — ang nagbabantay sa iyong paglalakbay! Ikaw ay may kalayaan sa puso na hindi kayang kulong ng kahit anong sitwasyon. Malalim kang tao — marami kang nararamdaman na hindi mo laging sinasabi. Ito ang iyong lakas! 🌊✨"
+      },
+      {
+        emoji: "☀️🪽",
+        name: "Anghel ng Liwanag",
+        rarity: "✨ ESPESYAL",
+        personalityTag: "💡 Nagbibigay ng Inspirasyon",
+        desc: "Ang Anghel ng Liwanag ang gumagabay sa iyong landas! Saan ka man pumunta, may dala kang positibong enerhiya na nakaka-inspire sa iba. Ang iyong presensya lang ay nagpapabago ng mood ng silid. Huwag mong baguhin iyan — ang mundo ay kailangan ng mas maraming katulad mo! ☀️💛"
+      },
+      {
+        emoji: "🌍🪽",
+        name: "Nuno sa Punso",
+        rarity: "⭐ KARANIWAN",
+        personalityTag: "🏡 Tagapagtanggol ng Pamilya",
+        desc: "Ang Nuno sa Punso — espiritu ng lupa — ang nagpoprotekta sa iyong tahanan at pamilya! Malakas ang iyong pagmamahal sa pamilya at sa mga mahal mo sa buhay. Sila ang iyong lakas at dahilan sa bawat araw. Huwag kalimutang alagaan ang mga taong alagaan ka rin! 🏡💚"
+      },
+      {
+        emoji: "👨‍👩‍👧🪽",
+        name: "Anghel ng Pamilya",
+        rarity: "✨ ESPESYAL",
+        personalityTag: "❤️ Puso ng Tahanan",
+        desc: "Ang Anghel ng Pamilya ang nagtatayo ng proteksyon sa paligid ng iyong mga mahal sa buhay! Ikaw ang glue ng iyong pamilya at barkada — lagi kang nandoon para sa kanila. Ang iyong pagmamahal ay nagbibigay ng lakas sa lahat. Ito ang pinaka-makapangyarihang regalo mo! ❤️✨"
+      },
+      {
+        emoji: "💨🪽",
+        name: "Diwata ng Hangin",
+        rarity: "🌟 BIHIRANG",
+        personalityTag: "🌬️ Mahirap Hulaan, Imposibleng Habulin",
+        desc: "Ang Diwata ng Hangin ang nagbibigay sa iyo ng kakayahang mag-adapt sa kahit anong pagbabago! Hindi mo kailangang magpaliwanag sa lahat — ikaw ay palaging isang hakbang na mas maaga kaysa sa iba. Ang mga taong hindi ka maintindihan ay hayaan mo lang — ikaw ay para sa mga taong karapat-dapat sa iyo! 💨✨"
+      }
+    ],
+
+    kFood: [
+      {
+        emoji: "🍜🔥",
+        name: "Buldak Ramen",
+        tag: "#VIRAL",
+        desc: "Ang pinaka-spicy na ramen na sikat sa buong mundo! Ang tapang mo ngayon ay maximum — kayang-kaya mo ang lahat ng hamon! Subukan mo ang Buldak challenge kasama ang barkada mo! 🔥🇰🇷"
+      },
+      {
+        emoji: "🧋💜",
+        name: "Ube Milk Tea",
+        tag: "#PINOY-FAVE",
+        desc: "Ang perfect na combination ng Filipino ube at Korean milk tea! Maswerte kang may pinakamahusay na dalawang mundo. Ang araw mo ngayon ay matamis at masaya — enjoy! 🧋💜"
+      },
+      {
+        emoji: "🌶️🍡",
+        name: "Tteokbokki",
+        tag: "#HOT",
+        desc: "Ang sikat na Korean rice cake na pang-street food! Katulad mo — simple ang hitsura pero puno ng lasa at surpresa! Ngayon ay magandang araw para subukan ang bagong bagay! 🌶️✨"
+      },
+      {
+        emoji: "🍗✨",
+        name: "Korean Fried Chicken",
+        tag: "#BESTSELLER",
+        desc: "Ang pinaka-crispy at masarap na fried chicken! Ngayon ay araw para i-celebrate ang iyong mga achievements — maliit man o malaki, lahat ay dapat i-enjoy! 🍗🎉"
+      },
+      {
+        emoji: "🍵🌿",
+        name: "Matcha Latte",
+        tag: "#AESTHETIC",
+        desc: "Calm, aesthetic, at super healthy! Ngayon ay araw para mag-slow down at i-appreciate ang maliliit na bagay sa buhay. Mag-pose muna bago uminom — para sa gram! 📸🍵"
+      },
+      {
+        emoji: "🍱💚",
+        name: "Kimbap",
+        tag: "#HEALTHY",
+        desc: "Ang Korean version ng ating sushi — puno ng sustansya at sarap! Ikaw ngayon ay organized, focused, at may plano. Lahat ng gusto mong gawin ngayon ay magiging maayos! 💪✨"
+      },
+      {
+        emoji: "🥞💛",
+        name: "Hotteok",
+        tag: "#SWEET",
+        desc: "Ang Korean pancake na puno ng matamis na filling sa loob! May naghihintay na sorpresa para sa iyo ngayon — isang magandang balita na hindi mo inaasahan! 🥞✨"
+      },
+      {
+        emoji: "🥩🔥",
+        name: "Samgyupsal",
+        tag: "#BONDING",
+        desc: "Ang pinaka-sikat na Korean BBQ — mas masarap kapag sama-sama! Ngayon ay araw para mag-bonding sa mga kaibigan at pamilya. Text mo na ang barkada — huwag kalimutan! 🥩👥"
+      },
+      {
+        emoji: "☕📸",
+        name: "Dalgona Coffee",
+        tag: "#ICONIC",
+        desc: "Ang viral na Korean coffee na naging uso sa buong mundo! Ang aura mo ngayon ay photogenic at attractive — maraming tao ang magiging interesado sa iyo ngayon! ☕💕"
+      },
+      {
+        emoji: "🍓❄️",
+        name: "Strawberry Bingsu",
+        tag: "#FRESH",
+        desc: "Ang malamig at masarap na Korean shaved ice! Katulad ng bingsu — ikaw ngayon ay fresh, masaya, at puno ng buhay. Ang positibong enerhiya mo ay makaka-inspire sa lahat! 🍓✨"
+      }
+    ],
+
+    luckyEmojiCombo: [
+      "🌸✨💕", "💫🌟⭐", "🪽✨🌈", "💖🌸🦋",
+      "⭐💛🌻", "🪽✨💎", "🌙💕☁️", "🔥💪⚡",
+      "🌺💐🌸", "✨🎀💗", "🍀💚✨", "🦋🌸💫"
+    ]
+  },
+
+  getShareText: function (result) {
+    return [
+      '🪽 Ang Anghel Bantay ko: ' + result.khodam.name + ' ' + result.khodam.emoji,
+      result.khodam.rarity + '  |  ' + result.khodam.personalityTag,
+      '',
+      '"' + result.khodam.desc + '"',
+      '',
+      '🍜 K-Food ko ngayon: ' + result.kFood.name + ' ' + result.kFood.emoji,
+      result.kFood.tag + ' — ' + result.kFood.desc,
+      '',
+      result.luckyEmojiCombo,
+      '',
+      'Viral sa Korea at Pilipinas! 🇵🇭🇰🇷 Alamin din ang sa iyo!',
+      '👆 I-tag ang 3 kaibigan mo para malaman din nila! 💕'
+    ].join('\n');
+  },
+
+  theme: {
+    // 파스텔 스카이블루 + 코랄 + 골드 (필리핀 국기 감성 부드럽게)
+    gradientFrom: '#93c5fd',  // blue-300
+    gradientTo:   '#fca5a5',  // red-300
+    gradientVia:  '#fde68a',  // amber-200
+
+    cardBg:         '#eff6ff', // blue-50
+    cardBorder:     '#93c5fd', // blue-300
+    accentColor:    '#1d4ed8', // blue-700
+    accentLight:    '#dbeafe', // blue-100
+    buttonPrimary:  'linear-gradient(135deg, #2563eb, #dc2626)',
+    buttonShare:    '#1877f2', // Facebook blue (필리핀 FB 1위)
+    shadowColor:    'rgba(147,197,253,0.5)'
+  },
+
+  // 필리핀: Facebook 압도적 1위, Messenger, TikTok 급성장
+  socialOrder: ['facebook', 'messenger', 'whatsapp', 'tiktok', 'instagram', 'twitter']
+};
+
+</script>
+
+  <!-- ── Core 엔진 스크립트 (build.js가 자동 주입) ───────
+       빌드 시 core.js 전체가 여기에 인라인 삽입됩니다.
+       광고 제어, 랜덤 연산, WhatsApp 공유 함수가 정의됩니다.
+  ──────────────────────────────────────────────────────── -->
+  <script>
+/* ====================================================
+ * 핵심 공용 엔진 (자동 생성 - 수정하지 마세요)
+ * 원본: src/core.js
+ * ==================================================== */
+// ============================================================
+// core.js — 글로벌 수익 자판기 핵심 공용 엔진
+// ============================================================
+// 이 파일은 인도/인도네시아 두 스킨이 100% 공유하는 유일한 로직 레이어입니다.
+// 광고 제어, 무한 랜덤 연산, WhatsApp 공유 배선을 담당합니다.
+// ★ 이 파일은 수정하지 않아도 됩니다. 콘텐츠는 config-*.js에서 관리합니다.
+// ============================================================
+
+/**
+ * [랜덤 선택기]
+ * 배열에서 매번 다른 요소를 반환합니다.
+ * 배열 크기를 늘릴수록 조합 수가 폭발적으로 증가 → "무한 랜덤성" 구현의 핵심
+ *
+ * @param {Array} arr - 무작위로 선택할 배열
+ * @returns {*} 배열에서 랜덤하게 선택된 요소 1개
+ */
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/**
+ * [무한 랜덤 결과 생성기]
+ * config.resultPools 객체의 각 키(luckyNumber, vedicCard 등)에 대해
+ * 각각 독립적으로 랜덤 선택을 수행하여 완성된 결과 객체를 조립합니다.
+ * 예: 9가지 카드 × 13가지 숫자 × 6가지 색상 = 702가지 조합
+ *
+ * @param {Object} config - 국가별 APP_CONFIG 설정 객체 (window.APP_CONFIG)
+ * @returns {Object} 각 풀에서 선택된 값들로 구성된 결과 객체
+ */
+function generateRandomResult(config) {
+  const result = {};
+  // resultPools의 각 키-배열 쌍을 순회하며 독립 랜덤 선택
+  for (const [key, pool] of Object.entries(config.resultPools)) {
+    result[key] = pickRandom(pool);
+  }
+  return result;
+}
+
+/**
+ * [광고 인터스티셜 컨트롤러]
+ * 유저가 결과 보기 버튼을 누를 때 이 함수가 호출됩니다.
+ * Adsterra 광고가 로드되면 → 광고 표시 → 닫힘 시 결과창 이동
+ * Adsterra 광고 차단/로드실패 → 3초 폴백 타이머 후 결과창 강제 이동
+ *
+ * ★ 실제 Adsterra 계정 설정 방법:
+ *    1. Adsterra 대시보드(adsterra.com)에서 'Pop-under' 또는 'Interstitial' 광고 코드 발급
+ *    2. templates/index.html의 <!-- AD_PLACEHOLDER --> 주석을
+ *       발급받은 <script> 코드 전체로 교체하면 자동 작동합니다.
+ *    3. Adsterra 팝언더는 페이지 로드 후 첫 번째 유저 클릭 시 자동 발동되므로
+ *       버튼 클릭이 곧 광고 트리거 시점이 됩니다.
+ *
+ * @param {Function} onComplete - 광고 종료 또는 3초 타임아웃 후 실행할 콜백 함수
+ */
+function showInterstitialAd(onComplete) {
+  // 콜백이 두 번 실행되는 것을 방지하는 플래그
+  let callbackFired = false;
+
+  function fireCallback() {
+    if (callbackFired) return; // 이미 실행됐으면 두 번째 호출 무시
+    callbackFired = true;
+    // 화면에 오버레이가 남아있으면 제거
+    const overlay = document.getElementById('ad-overlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      overlay.style.transition = 'opacity 0.3s ease';
+      setTimeout(function () { if (overlay.parentNode) overlay.remove(); }, 300);
+    }
+    onComplete(); // 결과창 렌더링 시작
+  }
+
+  // ── 3초 폴백 타이머 ──────────────────────────────────────
+  // AdBlock 사용자, 광고 네트워크 오류, 느린 네트워크 모두 커버
+  // 어떤 상황에서도 유저가 결과 화면으로 반드시 이동하도록 보장
+  const fallbackTimer = setTimeout(fireCallback, 3000);
+
+  // ── 광고 대기 오버레이 DOM 생성 ──────────────────────────
+  // 유저에게 "잠깐 기다려 주세요" 피드백을 주는 반투명 풀스크린 레이어
+  // 실제 Adsterra 팝언더 광고는 백그라운드 탭에서 열리므로
+  // 이 오버레이가 메인 화면의 시각적 피드백을 담당합니다
+  const overlay = document.createElement('div');
+  overlay.id = 'ad-overlay';
+  overlay.setAttribute('style', [
+    'position:fixed', 'top:0', 'left:0', 'right:0', 'bottom:0',
+    'z-index:9999',
+    'background:rgba(0,0,0,0.80)',
+    'display:flex',
+    'flex-direction:column',
+    'align-items:center',
+    'justify-content:center',
+    'backdrop-filter:blur(6px)',
+    '-webkit-backdrop-filter:blur(6px)',
+    'opacity:0',
+    'transition:opacity 0.3s ease'
+  ].join(';'));
+
+  // 오버레이 내부 카드 (국가 스킨에 무관하게 중립적인 디자인)
+  overlay.innerHTML = [
+    '<div style="',
+    'background:white;',
+    'border-radius:24px;',
+    'padding:32px 24px;',
+    'max-width:320px;',
+    'width:88%;',
+    'text-align:center;',
+    'box-shadow:0 30px 60px rgba(0,0,0,0.4);',
+    '">',
+    // 스피너 이모지 (JS가 애니메이션 처리)
+    '<div id="ad-spinner" style="font-size:52px;margin-bottom:16px;">⏳</div>',
+    '<p style="font-size:17px;font-weight:900;color:#222;margin:0 0 6px;">Please wait...</p>',
+    '<p style="font-size:13px;color:#888;margin:0 0 20px;">Your result is almost ready ✨</p>',
+    // 프로그레스 바 트랙
+    '<div style="background:#f0f0f0;border-radius:99px;height:10px;overflow:hidden;margin-bottom:12px;">',
+    '<div id="ad-progress" style="',
+    'height:100%;',
+    'width:0%;',
+    'background:linear-gradient(90deg,#f97316,#eab308);',
+    'border-radius:99px;',
+    'transition:width 0.1s linear;',
+    '"></div>',
+    '</div>',
+    // 광고 레이블
+    '<p style="font-size:10px;color:#ccc;margin:0;">Sponsored · Advertisement</p>',
+    // 실제 Adsterra 배너 광고를 여기에 삽입할 수도 있습니다
+    '<div id="ad-banner-slot" style="margin-top:12px;min-height:60px;"></div>',
+    '</div>'
+  ].join('');
+
+  document.body.appendChild(overlay);
+
+  // 페이드인 (requestAnimationFrame으로 CSS transition 트리거)
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      overlay.style.opacity = '1';
+    });
+  });
+
+  // ── 프로그레스 바 & 스피너 애니메이션 ────────────────────
+  // 3초(3000ms) 동안 0% → 100% 채우기
+  let progress = 0;
+  const progressEl = document.getElementById('ad-progress');
+  const spinnerEl = document.getElementById('ad-spinner');
+  const spinnerFrames = ['⏳', '⌛', '⏳', '⌛'];
+  let spinnerIdx = 0;
+
+  const progressInterval = setInterval(function () {
+    progress += 100 / 30; // 100ms 간격 × 30회 = 3000ms
+    if (progressEl) progressEl.style.width = Math.min(progress, 100) + '%';
+    spinnerIdx = (spinnerIdx + 1) % spinnerFrames.length;
+    if (spinnerEl) spinnerEl.textContent = spinnerFrames[spinnerIdx];
+    if (progress >= 100) clearInterval(progressInterval);
+  }, 100);
+
+  // ── Adsterra 실제 광고 API 연동 (선택 사항) ───────────────
+  // Adsterra 스크립트가 페이지에 로드된 경우 공식 닫힘 이벤트를 수신합니다.
+  // 스크립트가 없거나 함수가 없으면 try/catch가 무시하고 fallbackTimer에 위임합니다.
+  try {
+    if (typeof window.__adsterra_show === 'function') {
+      window.__adsterra_show({
+        onClose: function () {
+          clearTimeout(fallbackTimer);
+          clearInterval(progressInterval);
+          fireCallback();
+        }
+      });
+    }
+    // ★ Adsterra 팝언더 방식(가장 일반적):
+    //   유저의 첫 클릭 이벤트에서 자동으로 백그라운드 탭이 열립니다.
+    //   AD_PLACEHOLDER에 Adsterra 스크립트를 삽입하면 별도 API 호출 없이 자동 작동합니다.
+  } catch (e) {
+    // 광고 트리거 오류 → fallbackTimer(3초)에 위임하여 유저 이탈 방지
+    console.warn('[AdManager] 광고 트리거 실패, 3초 폴백 타이머 사용 중.', e.message);
+  }
+}
+
+/**
+ * [날짜 시드 선택기] — 기능 1: 오늘의 럭키 아이템
+ * 오늘 날짜를 seed로 사용해서 배열에서 하나를 일관되게 반환합니다.
+ * 같은 날은 누구나 같은 항목 → 매일 자정마다 자동 갱신 → 재방문 유도
+ */
+function getDailyItem(arr) {
+  var d = new Date();
+  var seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  return arr[seed % arr.length];
+}
+
+/**
+ * [주간 트렌드 선택기] — 기능 4: 주간 K-트렌드 배너
+ * 이번 주차(ISO week number)를 seed로 매주 자동 교체되는 트렌드를 반환합니다.
+ */
+function getWeeklyTrend(arr) {
+  var d = new Date();
+  var startOfYear = new Date(d.getFullYear(), 0, 1);
+  var week = Math.floor((d - startOfYear) / (7 * 24 * 60 * 60 * 1000));
+  return arr[week % arr.length];
+}
+
+/**
+ * [일일 방문자 카운터] — 기능 5: 사회적 증거 UI
+ * 날짜와 시간(0-23h)을 seed로 결정론적 숫자를 생성합니다.
+ * 시간이 지날수록 숫자가 자연스럽게 증가하는 것처럼 보입니다.
+ * @param {number} base - 기본 방문자 수 (예: 8000)
+ * @param {number} variance - 변동 폭 (예: 5000 → 8000~12999 범위)
+ */
+function getDailyVisitorCount(base, variance) {
+  var d = new Date();
+  var seed = d.getFullYear() * 1000000 + (d.getMonth() + 1) * 10000 + d.getDate() * 100 + d.getHours();
+  var hash = ((seed * 2654435761) >>> 0);
+  var count = base + (hash % variance);
+  return count.toLocaleString();
+}
+
+/**
+ * [별자리 가중 결과 생성기] — 기능 3: 별자리 선택 맞춤형 결과
+ * zodiacIndex(0-11)를 오프셋으로 더해 별자리마다 다른 결과 분포를 만듭니다.
+ * 실제로는 랜덤이지만 유저에게 "나만의 맞춤 결과" 느낌을 줍니다.
+ */
+function generateZodiacResult(config, zodiacIndex) {
+  var result = {};
+  for (var key in config.resultPools) {
+    var pool = config.resultPools[key];
+    var baseIdx = Math.floor(Math.random() * pool.length);
+    var idx = (baseIdx + (zodiacIndex || 0)) % pool.length;
+    result[key] = pool[idx];
+  }
+  return result;
+}
+
+/**
+ * [SNS 플랫폼 정의]
+ * 각 SNS의 브랜드 색상, 아이콘 SVG 경로, 공유 URL 생성기를 정의합니다.
+ * copyOnly: true인 플랫폼(Instagram, TikTok)은 직접 공유 API가 없어 클립보드 복사로 처리합니다.
+ */
+var SOCIAL_PLATFORMS = {
+  whatsapp: {
+    name: 'WhatsApp',
+    color: '#25D366',
+    svgPath: '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>',
+    getUrl: function(text, url) {
+      return 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text + '\n\n👉 ' + url);
+    }
+  },
+  facebook: {
+    name: 'Facebook',
+    color: '#1877F2',
+    svgPath: '<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>',
+    getUrl: function(text, url) {
+      return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&quote=' + encodeURIComponent(text);
+    }
+  },
+  instagram: {
+    name: 'Instagram',
+    color: '#E1306C',
+    svgPath: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
+    copyOnly: true,
+    getUrl: function() { return null; }
+  },
+  twitter: {
+    name: 'X (Twitter)',
+    color: '#000000',
+    svgPath: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
+    getUrl: function(text, url) {
+      return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+    }
+  },
+  telegram: {
+    name: 'Telegram',
+    color: '#2AABEE',
+    svgPath: '<path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>',
+    getUrl: function(text, url) {
+      return 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text);
+    }
+  },
+  tiktok: {
+    name: 'TikTok',
+    color: '#010101',
+    svgPath: '<path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>',
+    copyOnly: true,
+    getUrl: function() { return null; }
+  },
+  line: {
+    name: 'LINE',
+    color: '#00B900',
+    svgPath: '<path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.105.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>',
+    getUrl: function(text, url) {
+      return 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url);
+    }
+  },
+  youtube: {
+    name: 'YouTube',
+    color: '#FF0000',
+    svgPath: '<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>',
+    copyOnly: true,
+    getUrl: function() { return null; }
+  },
+  messenger: {
+    name: 'Messenger',
+    color: '#0084FF',
+    svgPath: '<path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111C24 4.974 18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/>',
+    getUrl: function(text, url) {
+      return 'fb-messenger://share/?link=' + encodeURIComponent(url) + '&app_id=291494419107518';
+    }
+  }
+};
+
+/**
+ * [SNS 공유 버튼 그리드 렌더러]
+ * config.socialOrder 배열 순서대로 SNS 아이콘 버튼을 생성합니다.
+ * @param {Object} config - 국가별 APP_CONFIG
+ * @returns {string} SNS 공유 버튼 그리드 HTML
+ */
+function renderSocialShareButtons(config) {
+  var order = (config.socialOrder && config.socialOrder.length)
+    ? config.socialOrder
+    : ['whatsapp', 'facebook', 'twitter', 'telegram'];
+
+  var buttons = order.map(function(key) {
+    var p = SOCIAL_PLATFORMS[key];
+    if (!p) return '';
+    var copyLabel = p.copyOnly ? ' title="링크 복사"' : '';
+    return [
+      '<button onclick="window._shareOn(\'' + key + '\')"',
+      copyLabel,
+      ' style="display:flex;flex-direction:column;align-items:center;gap:5px;',
+      'background:none;border:none;cursor:pointer;padding:6px 2px;min-width:52px;">',
+      '<div style="width:48px;height:48px;border-radius:50%;background:', p.color, ';',
+      'display:flex;align-items:center;justify-content:center;',
+      'box-shadow:0 3px 10px rgba(0,0,0,0.18);',
+      'transition:transform 0.15s,box-shadow 0.15s;" ',
+      'onmousedown="this.style.transform=\'scale(0.88)\'" ',
+      'onmouseup="this.style.transform=\'scale(1)\'" ',
+      'ontouchstart="this.style.transform=\'scale(0.88)\'" ',
+      'ontouchend="this.style.transform=\'scale(1)\'">',
+      '<svg viewBox="0 0 24 24" fill="white" width="22" height="22">', p.svgPath, '</svg>',
+      '</div>',
+      '<span style="font-size:9px;font-weight:800;color:#666;white-space:nowrap;letter-spacing:-0.2px;">', p.name, '</span>',
+      '</button>'
+    ].join('');
+  }).join('');
+
+  return [
+    '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:4px 0;">',
+    buttons,
+    '</div>'
+  ].join('');
+}
+
+/**
+ * [클립보드 복사 토스트 알림]
+ * Instagram·TikTok 등 직접 공유 API가 없는 플랫폼 사용 시 링크 복사 후 표시합니다.
+ */
+function showCopyToast(platformName) {
+  var existing = document.getElementById('share-toast');
+  if (existing) existing.remove();
+
+  var toast = document.createElement('div');
+  toast.id = 'share-toast';
+  toast.textContent = '📋 Link copied! Paste into ' + platformName;
+  toast.setAttribute('style', [
+    'position:fixed;bottom:36px;left:50%;transform:translateX(-50%);',
+    'background:#1a1a1a;color:white;padding:11px 22px;border-radius:24px;',
+    'font-size:13px;font-weight:700;z-index:99999;white-space:nowrap;',
+    'box-shadow:0 6px 20px rgba(0,0,0,0.35);',
+    'opacity:0;transition:opacity 0.25s ease;'
+  ].join(''));
+  document.body.appendChild(toast);
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() { toast.style.opacity = '1'; });
+  });
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    setTimeout(function() { if (toast.parentNode) toast.remove(); }, 300);
+  }, 2800);
+}
+
+/**
+ * [WhatsApp 공유 URL 생성기]
+ * 현재 도메인 URL + 국가별 현지어 바이럴 문구를 합쳐
+ * WhatsApp 딥링크 URL을 만듭니다.
+ *
+ * @param {Object} config - 국가별 APP_CONFIG (config.getShareText 함수 필요)
+ * @param {Object} result - generateRandomResult()가 반환한 결과 객체
+ * @returns {string} 완성된 WhatsApp 공유 URL
+ */
+function generateWhatsAppShareUrl(config, result) {
+  const shareText = config.getShareText(result);
+  const fullText = shareText + '\n\n👉 ' + window.location.href;
+  return 'https://api.whatsapp.com/send?text=' + encodeURIComponent(fullText);
+}
+
+/**
+ * [WhatsApp 공유 실행기] — 하위 호환성 유지용
+ */
+function openWhatsAppShare(config, result) {
+  const url = generateWhatsAppShareUrl(config, result);
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+</script>
+
+  <!-- ── 앱 전용 커스텀 스타일 ─────────────────────────── -->
+  <style>
+    /* 기본 리셋 & 모바일 최적화 */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif; }
+
+    /* 버튼 터치 피드백 */
+    .btn-primary:active  { transform: scale(0.96); }
+    .btn-share:active    { transform: scale(0.96); }
+    .btn-retry:active    { transform: scale(0.97); }
+
+    /* 카드 페이드인 애니메이션 */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.45s ease forwards; }
+
+    /* 히어로 이모지 펄스 애니메이션 */
+    @keyframes heroPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.08); }
+    }
+    .animate-hero { animation: heroPulse 2s ease-in-out infinite; }
+
+    /* 결과 카드 빛나는 테두리 효과 */
+    @keyframes shimmer {
+      0%   { box-shadow: 0 0 0 0 var(--shadow-color, rgba(251,191,36,0.4)); }
+      70%  { box-shadow: 0 0 0 12px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    .card-shimmer { animation: shimmer 2s 0.5s ease forwards; }
+
+    /* 희귀도 배지 반짝임 */
+    @keyframes rarityGlow {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.7; }
+    }
+    .rarity-badge { animation: rarityGlow 1.5s ease infinite; }
+
+    /* 드롭다운 커스텀 화살표 */
+    select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+    /* 스크롤바 숨기기 (결과 카드) */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body>
+  <!-- 앱 루트 컨테이너: 모든 화면이 여기에 렌더링됩니다 -->
+  <div id="app"></div>
+
+  <!-- ============================================================
+       앱 메인 스크립트
+       window.APP_CONFIG (config-*.js에서 정의)와
+       core.js 함수들을 사용하여 모든 화면을 렌더링합니다.
+       ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ── APP_CONFIG 가드 ─────────────────────────────────
+      // build.js가 제대로 config를 주입하지 못한 경우 안내 메시지 표시
+      if (typeof window.APP_CONFIG === 'undefined') {
+        document.getElementById('app').innerHTML =
+          '<div style="padding:40px;text-align:center;font-family:sans-serif;">' +
+          '<h2>⚠️ Build Error</h2>' +
+          '<p>이 파일은 templates/index.html 원본입니다.<br>' +
+          '<strong>node build.js</strong> 를 실행하여 dist/ 결과물을 열어주세요.</p>' +
+          '</div>';
+        return;
+      }
+
+      var cfg = window.APP_CONFIG; // 국가별 설정 객체
+      var currentResult = null;   // 현재 화면에 표시 중인 랜덤 결과 저장
+
+      // ── DOM 헬퍼 ────────────────────────────────────────
+      function setApp(html) {
+        document.getElementById('app').innerHTML = html;
+      }
+
+      // ── CSS 변수 주입 (테마 색상을 CSS 레이어에 전달) ──
+      function applyTheme() {
+        var root = document.documentElement;
+        root.style.setProperty('--grad-from',    cfg.theme.gradientFrom);
+        root.style.setProperty('--grad-to',      cfg.theme.gradientTo);
+        root.style.setProperty('--grad-via',     cfg.theme.gradientVia);
+        root.style.setProperty('--card-bg',      cfg.theme.cardBg);
+        root.style.setProperty('--card-border',  cfg.theme.cardBorder);
+        root.style.setProperty('--accent',       cfg.theme.accentColor);
+        root.style.setProperty('--accent-light', cfg.theme.accentLight);
+        root.style.setProperty('--btn-primary',  cfg.theme.buttonPrimary);
+        root.style.setProperty('--shadow-color', cfg.theme.shadowColor);
+      }
+
+      // ─────────────────────────────────────────────────────
+      // SCREEN 1: 랜딩 페이지
+      // 유저가 처음 진입했을 때 보이는 화면
+      // ─────────────────────────────────────────────────────
+      function showLanding() {
+        // ── 기능 4: 주간 K-트렌드 배너 ─────────────────────
+        var weeklyTrendHtml = '';
+        if (cfg.weeklyKTrends && cfg.weeklyKTrends.length > 0 && cfg.ui.weeklyTrendLabel) {
+          var trend = getWeeklyTrend(cfg.weeklyKTrends);
+          weeklyTrendHtml = [
+            '<div class="w-full max-w-sm mb-3 rounded-2xl px-4 py-3 flex items-center gap-3 animate-fade-in-up" style="background:rgba(255,255,255,0.22);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">',
+            '<span class="text-2xl select-none flex-shrink-0">', trend.emoji, '</span>',
+            '<div class="min-w-0">',
+            '<div class="text-white text-xs font-black mb-0.5" style="opacity:0.85">', cfg.ui.weeklyTrendLabel, '</div>',
+            '<div class="text-white font-bold text-sm truncate">', trend.trend, '</div>',
+            '<div class="text-white text-xs" style="opacity:0.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">', trend.desc, '</div>',
+            '</div>',
+            '</div>'
+          ].join('');
+        }
+
+        // ── 기능 3: 별자리 드롭다운 ─────────────────────────
+        var zodiacHtml = '';
+        if (cfg.ui.zodiacOptions && cfg.ui.zodiacOptions.length > 0) {
+          var zodiacOpts = cfg.ui.zodiacOptions.map(function (opt) {
+            return '<option value="' + opt.value + '">' + opt.label + '</option>';
+          }).join('');
+          zodiacHtml = [
+            '<div class="mb-4">',
+            '<label class="block text-xs font-bold mb-2" style="color:var(--accent)">', cfg.ui.zodiacLabel, '</label>',
+            '<select id="zodiac-select" class="w-full p-3 rounded-2xl border text-sm text-gray-700 bg-white focus:outline-none focus:ring-2" style="border-color:var(--card-border);box-shadow:0 2px 8px rgba(0,0,0,0.08);">',
+            '<option value="-1">', cfg.ui.zodiacPlaceholder, '</option>',
+            zodiacOpts,
+            '</select>',
+            '</div>'
+          ].join('');
+        }
+
+        // ── 카테고리 드롭다운 (인도 스킨) ──────────────────
+        var selectorHtml = '';
+        if (cfg.ui.selectorLabel && cfg.ui.selectorOptions && cfg.ui.selectorOptions.length > 0) {
+          var optionsHtml = cfg.ui.selectorOptions.map(function (opt) {
+            return '<option value="' + opt.value + '">' + opt.label + '</option>';
+          }).join('');
+          selectorHtml = [
+            '<div class="mb-4">',
+            '<label class="block text-xs font-bold mb-2" style="color:var(--accent)">',
+            cfg.ui.selectorLabel,
+            '</label>',
+            '<select id="category-select" class="w-full p-3 rounded-2xl border text-sm text-gray-700 bg-white focus:outline-none focus:ring-2" style="border-color:var(--card-border);box-shadow:0 2px 8px rgba(0,0,0,0.08);">',
+            optionsHtml,
+            '</select>',
+            '</div>'
+          ].join('');
+        }
+
+        // ── 기능 5: 방문자 카운터 ────────────────────────────
+        var visitorHtml = '';
+        if (cfg.ui.visitorBase !== undefined && cfg.ui.visitorText) {
+          var count = getDailyVisitorCount(cfg.ui.visitorBase, cfg.ui.visitorVariance || 3000);
+          visitorHtml = [
+            '<div class="flex items-center justify-center gap-2 mt-3">',
+            '<span class="text-base select-none">👥</span>',
+            '<span class="text-xs font-bold" style="color:var(--accent)">',
+            count, ' ', cfg.ui.visitorText,
+            '</span>',
+            '</div>'
+          ].join('');
+        }
+
+        setApp([
+          // 배경 그래디언트
+          '<div class="min-h-screen flex flex-col items-center justify-center p-5" style="background:linear-gradient(135deg, var(--grad-from), var(--grad-via), var(--grad-to));">',
+
+          // 기능 4: 주간 K-트렌드 배너 (히어로 위)
+          weeklyTrendHtml,
+
+          // 히어로 이모지
+          '<div class="text-6xl mb-3 text-center animate-hero select-none" aria-hidden="true">',
+          cfg.ui.heroEmoji,
+          '</div>',
+
+          // 앱 타이틀
+          '<h1 class="text-3xl font-black text-center text-white mb-2 drop-shadow-lg" style="text-shadow:0 2px 8px rgba(0,0,0,0.2)">',
+          cfg.ui.appTitle,
+          '</h1>',
+
+          // 서브타이틀
+          '<p class="text-center text-white text-sm mb-4 px-4 max-w-xs" style="opacity:0.92">',
+          cfg.ui.appSubtitle,
+          '</p>',
+
+          // K-뱃지
+          cfg.ui.koreaBadge ? [
+            '<div class="text-center mb-4">',
+            '<span class="inline-block px-4 py-1.5 rounded-full text-xs font-black" style="background:rgba(255,255,255,0.28);color:white;letter-spacing:0.02em">',
+            cfg.ui.koreaBadge,
+            '</span>',
+            '</div>'
+          ].join('') : '<div class="mb-3"></div>',
+
+          // 메인 카드
+          '<div class="w-full max-w-sm rounded-3xl p-6 shadow-2xl animate-fade-in-up" style="background:var(--card-bg);border:1.5px solid var(--card-border);box-shadow:0 20px 50px var(--shadow-color)">',
+
+          // 카테고리 드롭다운 (인도 스킨)
+          selectorHtml,
+
+          // 기능 3: 별자리 드롭다운
+          zodiacHtml,
+
+          // CTA 버튼
+          '<button id="cta-btn" onclick="window._handleCTAClick()" class="w-full py-4 px-6 rounded-2xl font-black text-lg text-white shadow-lg btn-primary transition-all duration-200 active:scale-95" style="background:var(--btn-primary);box-shadow:0 8px 20px var(--shadow-color)">',
+          cfg.ui.ctaButton,
+          '</button>',
+
+          // 서브텍스트
+          '<p class="text-center text-xs mt-3" style="color:var(--accent);opacity:0.7">',
+          cfg.ui.ctaSubtext,
+          '</p>',
+
+          // 기능 5: 방문자 카운터
+          visitorHtml,
+
+          '</div>',
+
+          // 푸터
+          '<p class="text-white text-xs mt-8" style="opacity:0.4">© 2025 Global Lucky Vending Machine</p>',
+          '</div>'
+        ].join(''));
+      }
+
+      // ─────────────────────────────────────────────────────
+      // SCREEN 2: 광고 대기 화면
+      // showInterstitialAd()가 완료(닫힘 or 3초)되면 결과 화면으로 자동 이동
+      // ─────────────────────────────────────────────────────
+      function showAdWaiting() {
+        setApp([
+          '<div class="min-h-screen flex flex-col items-center justify-center p-5" style="background:linear-gradient(135deg, var(--grad-from), var(--grad-via), var(--grad-to));">',
+          '<div class="w-full max-w-sm rounded-3xl p-8 text-center animate-fade-in-up" style="background:var(--card-bg);border:1.5px solid var(--card-border)">',
+          '<div class="text-5xl mb-4 animate-spin select-none" id="loading-spinner">⏳</div>',
+          '<p class="font-black text-lg mb-2" style="color:var(--accent)">', cfg.ui.adNotice, '</p>',
+          '<p class="text-xs text-gray-400">Please wait a moment... ✨</p>',
+          '</div>',
+          '</div>'
+        ].join(''));
+      }
+
+      // ─────────────────────────────────────────────────────
+      // SCREEN 3: 결과 화면
+      // 인도/인도네시아 스킨에 따라 다른 결과 카드를 렌더링
+      // ─────────────────────────────────────────────────────
+      function showResult(result) {
+        var resultCardHtml = '';
+
+        // ── 인도 스킨 결과 카드 ──────────────────────────
+        if (cfg.country === 'india') {
+          resultCardHtml = [
+            // 메인 카드 이모지 + 카드명
+            '<div class="text-center mb-5">',
+            '<div class="text-6xl mb-2 select-none">', result.vedicCard.emoji, '</div>',
+            '<h2 class="text-xl font-black" style="color:var(--accent)">', result.vedicCard.name, '</h2>',
+            '<p class="text-xs text-gray-400 mt-0.5">', result.vedicCard.nameHi, '</p>',
+            '</div>',
+
+            // 영어 메시지
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed" style="background:white;border:1px solid var(--card-border)">',
+            '<p class="text-gray-700 mb-2">', result.vedicCard.message, '</p>',
+            '<p class="text-xs text-gray-400 italic">', result.vedicCard.messageHi, '</p>',
+            '</div>',
+
+            // 만트라
+            '<p class="text-center font-bold text-sm mb-4" style="color:var(--accent)">', result.vedicCard.mantra, '</p>',
+
+            // 행운 정보 그리드
+            '<div class="grid grid-cols-2 gap-3 mb-4">',
+            // 행운의 숫자
+            '<div class="rounded-2xl p-3 text-center" style="background:var(--accent-light)">',
+            '<div class="text-2xl select-none">🔢</div>',
+            '<div class="text-xs text-gray-500 mt-1">Lucky Number</div>',
+            '<div class="font-black text-xl mt-0.5" style="color:var(--accent)">', result.luckyNumber, '</div>',
+            '</div>',
+            // 행운의 시간
+            '<div class="rounded-2xl p-3 text-center" style="background:var(--accent-light)">',
+            '<div class="text-2xl select-none">⏰</div>',
+            '<div class="text-xs text-gray-500 mt-1">Lucky Time</div>',
+            '<div class="font-bold text-xs mt-0.5" style="color:var(--accent)">', result.luckyTime, '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운의 색상
+            '<div class="rounded-2xl p-3 text-center mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs text-gray-400 mb-1">Lucky Color | शुभ रंग</div>',
+            '<div class="font-bold" style="color:var(--accent)">', result.luckyColor.en, ' | ', result.luckyColor.hi, '</div>',
+            '</div>',
+
+            // 크리켓 행운 팁
+            '<div class="rounded-2xl p-3 text-center mb-4" style="background:var(--accent-light)">',
+            '<p class="text-sm font-bold" style="color:var(--accent)">', result.vedicCard.cricketTip, '</p>',
+            '</div>'
+          ].join('');
+        }
+
+        // ── 멕시코 스킨 결과 카드 (아스텍 달력) ─────────
+        else if (cfg.country === 'mexico') {
+          resultCardHtml = [
+            // 아스텍 카드 이모지 + 이름
+            '<div class="text-center mb-5">',
+            '<div class="text-6xl mb-2 select-none">', result.aztecCard.emoji, '</div>',
+            '<h2 class="text-xl font-black" style="color:var(--accent)">', result.aztecCard.name, '</h2>',
+            '<p class="text-xs text-gray-400 mt-0.5">', result.aztecCard.glyph, '</p>',
+            '</div>',
+
+            // 스페인어 메시지
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed" style="background:white;border:1px solid var(--card-border)">',
+            '<p class="text-gray-700">', result.aztecCard.message, '</p>',
+            '</div>',
+
+            // 만트라
+            '<p class="text-center font-bold text-sm mb-4" style="color:var(--accent)">', result.aztecCard.mantra, '</p>',
+
+            // 행운 정보 그리드
+            '<div class="grid grid-cols-2 gap-3 mb-4">',
+            '<div class="rounded-2xl p-3 text-center" style="background:var(--accent-light)">',
+            '<div class="text-2xl select-none">🔢</div>',
+            '<div class="text-xs text-gray-500 mt-1">Número de la Suerte</div>',
+            '<div class="font-black text-xl mt-0.5" style="color:var(--accent)">', result.luckyNumber, '</div>',
+            '</div>',
+            '<div class="rounded-2xl p-3 text-center" style="background:var(--accent-light)">',
+            '<div class="text-2xl select-none">⏰</div>',
+            '<div class="text-xs text-gray-500 mt-1">Hora de Poder</div>',
+            '<div class="font-bold text-xs mt-0.5" style="color:var(--accent)">', result.luckyTime, '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운의 색상
+            '<div class="rounded-2xl p-3 text-center mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs text-gray-400 mb-1">Color Sagrado del Día</div>',
+            '<div class="font-bold" style="color:var(--accent)">', result.luckyColor.es, ' · ', result.luckyColor.alt, '</div>',
+            '</div>',
+
+            // 음식 행운 팁
+            '<div class="rounded-2xl p-3 text-center mb-4" style="background:var(--accent-light)">',
+            '<p class="text-sm font-bold" style="color:var(--accent)">', result.aztecCard.foodTip, '</p>',
+            '</div>'
+          ].join('');
+        }
+
+        // ── 브라질 스킨 결과 카드 (오리샤 수호령) ────────
+        else if (cfg.country === 'brazil') {
+          resultCardHtml = [
+            // 오리샤 이모지 + 희귀도 배지
+            '<div class="text-center mb-4">',
+            '<div class="text-6xl mb-3 select-none">', result.orixa.emoji, '</div>',
+            '<span class="rarity-badge inline-block rounded-full px-3 py-1 text-xs font-black mb-3" style="background:var(--accent-light);color:var(--accent)">',
+            result.orixa.rarity,
+            '</span>',
+            '</div>',
+
+            // 오리샤 이름 + 성격 태그
+            '<h2 class="text-xl font-black text-center mb-1" style="color:var(--accent)">Orixá: ', result.orixa.name, '</h2>',
+            '<div class="text-center mb-4">',
+            '<span class="inline-block rounded-full px-4 py-1 text-xs font-bold" style="background:var(--accent-light);color:var(--accent)">',
+            result.orixa.personalityTag,
+            '</span>',
+            '</div>',
+
+            // 오리샤 설명
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed text-gray-700" style="background:white;border:1px solid var(--card-border)">',
+            result.orixa.desc,
+            '</div>',
+
+            // K-Food 섹션
+            '<div class="rounded-2xl p-4 mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs font-black mb-3" style="color:var(--accent)">🍜 K-Food do Dia</div>',
+            '<div class="flex items-start gap-3">',
+            '<span class="text-3xl flex-shrink-0 select-none">', result.kFood.emoji, '</span>',
+            '<div>',
+            '<div class="font-black text-sm mb-1" style="color:var(--accent)">', result.kFood.name, '</div>',
+            '<span class="inline-block rounded-full px-2 py-0.5 text-xs font-bold mb-1" style="background:var(--accent-light);color:var(--accent)">', result.kFood.tag, '</span>',
+            '<p class="text-xs text-gray-600 leading-relaxed">', result.kFood.desc, '</p>',
+            '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운 이모지 콤보
+            '<div class="text-center text-4xl mb-2 select-none">', result.luckyEmojiCombo, '</div>'
+          ].join('');
+        }
+
+        // ── 필리핀 스킨 결과 카드 (Anghel Bantay) ────────
+        else if (cfg.country === 'philippines') {
+          resultCardHtml = [
+            // 수호천사 이모지 + 희귀도 배지
+            '<div class="text-center mb-4">',
+            '<div class="text-6xl mb-3 select-none">', result.khodam.emoji, '</div>',
+            '<span class="rarity-badge inline-block rounded-full px-3 py-1 text-xs font-black mb-3" style="background:var(--accent-light);color:var(--accent)">',
+            result.khodam.rarity,
+            '</span>',
+            '</div>',
+
+            // 수호천사 이름 + 성격 태그
+            '<h2 class="text-xl font-black text-center mb-1" style="color:var(--accent)">Anghel Bantay: ', result.khodam.name, '</h2>',
+            '<div class="text-center mb-4">',
+            '<span class="inline-block rounded-full px-4 py-1 text-xs font-bold" style="background:var(--accent-light);color:var(--accent)">',
+            result.khodam.personalityTag,
+            '</span>',
+            '</div>',
+
+            // 수호천사 설명
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed text-gray-700" style="background:white;border:1px solid var(--card-border)">',
+            result.khodam.desc,
+            '</div>',
+
+            // K-Food 섹션
+            '<div class="rounded-2xl p-4 mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs font-black mb-3" style="color:var(--accent)">🍜 K-Food mo Ngayon</div>',
+            '<div class="flex items-start gap-3">',
+            '<span class="text-3xl flex-shrink-0 select-none">', result.kFood.emoji, '</span>',
+            '<div>',
+            '<div class="font-black text-sm mb-1" style="color:var(--accent)">', result.kFood.name, '</div>',
+            '<span class="inline-block rounded-full px-2 py-0.5 text-xs font-bold mb-1" style="background:var(--accent-light);color:var(--accent)">', result.kFood.tag, '</span>',
+            '<p class="text-xs text-gray-600 leading-relaxed">', result.kFood.desc, '</p>',
+            '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운의 이모지 콤보
+            '<div class="text-center text-4xl mb-2 select-none">', result.luckyEmojiCombo, '</div>'
+          ].join('');
+        }
+
+        // ── 인도네시아 스킨 결과 카드 (기본값) ──────────
+        else {
+          resultCardHtml = [
+            // 수호령 이모지 + 희귀도 배지
+            '<div class="text-center mb-4">',
+            '<div class="text-6xl mb-3 select-none">', result.khodam.emoji, '</div>',
+            '<span class="rarity-badge inline-block rounded-full px-3 py-1 text-xs font-black mb-3" style="background:var(--accent-light);color:var(--accent)">',
+            result.khodam.rarity,
+            '</span>',
+            '</div>',
+
+            // 수호령 이름 + 성격 태그
+            '<h2 class="text-xl font-black text-center mb-1" style="color:var(--accent)">Khodam: ', result.khodam.name, '</h2>',
+            '<div class="text-center mb-4">',
+            '<span class="inline-block rounded-full px-4 py-1 text-xs font-bold" style="background:var(--accent-light);color:var(--accent)">',
+            result.khodam.personalityTag,
+            '</span>',
+            '</div>',
+
+            // 수호령 설명
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed text-gray-700" style="background:white;border:1px solid var(--card-border)">',
+            result.khodam.desc,
+            '</div>',
+
+            // K-푸드 섹션
+            '<div class="rounded-2xl p-4 mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs font-black mb-3" style="color:var(--accent)">🍜 K-Food Hari Ini</div>',
+            '<div class="flex items-start gap-3">',
+            '<span class="text-3xl flex-shrink-0 select-none">', result.kFood.emoji, '</span>',
+            '<div>',
+            '<div class="font-black text-sm mb-1" style="color:var(--accent)">', result.kFood.name, '</div>',
+            '<span class="inline-block rounded-full px-2 py-0.5 text-xs font-bold mb-1" style="background:var(--accent-light);color:var(--accent)">', result.kFood.tag, '</span>',
+            '<p class="text-xs text-gray-600 leading-relaxed">', result.kFood.desc, '</p>',
+            '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운의 이모지 콤보
+            '<div class="text-center text-4xl mb-2 select-none">', result.luckyEmojiCombo, '</div>'
+          ].join('');
+        }
+
+        // 결과 화면 전체 렌더링
+        setApp([
+          '<div class="min-h-screen flex flex-col items-center justify-start pt-8 px-5 pb-24" style="background:linear-gradient(135deg, var(--grad-from), var(--grad-via), var(--grad-to));">',
+
+          // 결과 카드 (카드 등장 애니메이션 + 반짝임 효과)
+          '<div class="w-full max-w-sm rounded-3xl p-6 shadow-2xl animate-fade-in-up card-shimmer no-scrollbar" style="background:var(--card-bg);border:1.5px solid var(--card-border);box-shadow:0 20px 50px var(--shadow-color)">',
+
+          // 결과 타이틀
+          '<h3 class="text-center font-black text-lg mb-5" style="color:var(--accent)">',
+          cfg.ui.resultTitle,
+          '</h3>',
+
+          // 국가별 결과 카드 내용 (위에서 조립한 HTML)
+          resultCardHtml,
+
+          // 기능 1: 오늘의 럭키 아이템 패널 (WhatsApp 버튼 바로 위)
+          (function () {
+            if (!cfg.dailyLuckyItems || !cfg.dailyLuckyItems.length || !cfg.ui.dailyItemTitle) return '';
+            var item = getDailyItem(cfg.dailyLuckyItems);
+            return [
+              '<div class="rounded-2xl p-4 mb-4 text-sm" style="background:linear-gradient(135deg,var(--accent-light),white);border:1.5px solid var(--card-border)">',
+              '<div class="text-xs font-black mb-2" style="color:var(--accent)">', cfg.ui.dailyItemTitle, '</div>',
+              '<div class="flex items-start gap-3">',
+              '<span class="text-3xl flex-shrink-0 select-none">', item.emoji, '</span>',
+              '<div>',
+              '<div class="font-black text-sm mb-1" style="color:var(--accent)">', item.name, '</div>',
+              '<p class="text-xs text-gray-600 leading-relaxed">', item.desc, '</p>',
+              '</div>',
+              '</div>',
+              '</div>'
+            ].join('');
+          })(),
+
+          // SNS 공유 섹션 (바이럴 핵심!)
+          '<div class="mt-4 mb-1">',
+          '<p class="text-center font-black text-sm mb-3" style="color:var(--accent)">',
+          cfg.ui.shareSectionTitle || '📲 Share Your Result!',
+          '</p>',
+          renderSocialShareButtons(cfg),
+          '</div>',
+
+          // 다시 뽑기 버튼
+          '<button onclick="window._handleRetry()" class="w-full py-3 px-6 rounded-2xl font-bold text-sm mt-3 btn-retry transition-all duration-200" style="background:white;border:1.5px solid var(--card-border);color:var(--accent)">',
+          cfg.ui.retryButton,
+          '</button>',
+
+          '</div>', // 결과 카드 닫기
+
+          // 스마트링크 버튼 (카드 외부 — 콘텐츠 소비 직후 클릭률 최적 위치)
+          '<a href="https://www.effectivecpmnetwork.com/j89322zg?key=561457da58909f9dc25b5cba39d53876" target="_blank" rel="noopener" class="block w-full max-w-sm mt-4 py-3 px-5 rounded-2xl font-bold text-sm text-center text-white active:scale-95 transition-all duration-200" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 6px 16px rgba(99,102,241,0.3)">',
+          cfg.ui.smartlinkButton || '✨ Explore More Lucky Insights →',
+          '</a>',
+
+          // 네이티브 배너 컨테이너 (invoke.js가 여기에 광고를 주입)
+          '<div class="w-full max-w-sm mt-4">',
+          '<div id="container-885d437a9988328211937c3edeff1988"></div>',
+          '</div>',
+
+          '</div>' // 화면 닫기
+        ].join(''));
+
+        // 네이티브 배너 스크립트 레이지 로드 — 컨테이너 div 생성 후 1회만 실행
+        if (!window._nativeBannerLoaded) {
+          window._nativeBannerLoaded = true;
+          var nbs = document.createElement('script');
+          nbs.async = true;
+          nbs.setAttribute('data-cfasync', 'false');
+          nbs.src = 'https://pl30266861.effectivecpmnetwork.com/885d437a9988328211937c3edeff1988/invoke.js';
+          document.head.appendChild(nbs);
+        }
+
+        // CSS 변수로 공유 버튼 색상 지정
+        document.documentElement.style.setProperty('--btn-share', cfg.theme.buttonShare);
+      }
+
+      // ─────────────────────────────────────────────────────
+      // 이벤트 핸들러 (onclick에서 window._로 글로벌 접근)
+      // ─────────────────────────────────────────────────────
+
+      /**
+       * CTA 버튼 클릭 핸들러
+       * 광고 오버레이 → 3초 후 자동으로 결과 화면으로 이동
+       */
+      window._handleCTAClick = function () {
+        // 별자리 선택값 읽기 (기능 3)
+        var zodiacEl = document.getElementById('zodiac-select');
+        var zodiacIndex = zodiacEl ? parseInt(zodiacEl.value, 10) : -1;
+
+        showAdWaiting();
+        showInterstitialAd(function () {
+          var result = (zodiacIndex >= 0)
+            ? generateZodiacResult(cfg, zodiacIndex)
+            : generateRandomResult(cfg);
+          currentResult = result;
+          showResult(result);
+        });
+      };
+
+      /**
+       * SNS 공유 버튼 클릭 핸들러
+       * copyOnly 플랫폼(Instagram, TikTok 등)은 클립보드 복사 후 토스트 표시
+       * 나머지는 해당 플랫폼 공유 URL을 새 탭으로 열기
+       */
+      window._shareOn = function (platform) {
+        if (!currentResult) return;
+        var p = SOCIAL_PLATFORMS[platform];
+        if (!p) return;
+        var shareText = cfg.getShareText(currentResult);
+        var shareUrl = window.location.href;
+
+        if (p.copyOnly) {
+          var fullText = shareText + '\n\n👉 ' + shareUrl;
+          try {
+            navigator.clipboard.writeText(fullText).then(function () {
+              showCopyToast(p.name);
+            }).catch(function () {
+              fallbackCopy(fullText, p.name);
+            });
+          } catch (e) {
+            fallbackCopy(fullText, p.name);
+          }
+        } else {
+          var url = p.getUrl(shareText, shareUrl);
+          window.open(url, '_blank', 'noopener,noreferrer');
+        }
+      };
+
+      function fallbackCopy(text, platformName) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        showCopyToast(platformName);
+      }
+
+      // 하위 호환성: WhatsApp 직접 공유
+      window._handleShare = function () {
+        window._shareOn('whatsapp');
+      };
+
+      /**
+       * 다시 뽑기 버튼 클릭 핸들러
+       * 랜딩 화면으로 돌아가 새로운 결과를 뽑을 수 있게 합니다
+       */
+      window._handleRetry = function () {
+        currentResult = null;
+        showLanding();
+      };
+
+      // ── 앱 초기화 ────────────────────────────────────────
+      applyTheme();   // CSS 변수에 테마 색상 주입
+      showLanding();  // 랜딩 화면 렌더링 시작
+
+    })();
+  </script>
+</body>
+</html>
